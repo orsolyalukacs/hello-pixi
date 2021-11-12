@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+  <script src="https://pixijs.download/release/pixi.js"></script>
+</head>
+
+<body>
+  <h1>Hello PixiJS</h1>
+  <script>
+    // Creates renderer, stage, and starts a ticker for updating
+    let app = new PIXI.Application({ width: 1000, height: 800 });
+    // Add generated view to the DOM
+    document.body.appendChild(app.view);
+
+    // Create sprites - load the PNG asynchronously
+    let crab = PIXI.Sprite.from('blue_crab.png');
+    let csiga = PIXI.Sprite.from('csiga2.png');
+    let turtle = PIXI.Sprite.from('sea_turtle_sm.png');
+    turtle.anchor.set(0.5);
+    turtle.x = app.view.width / 2;
+    turtle.y = app.view.height / 2;
+
+    // Add sprites to stage
+    app.stage.addChild(csiga);
+    app.stage.addChild(crab);
+    app.stage.addChild(turtle);
+
+    // Mouse interactions
+    app.stage.interactive = true;
+    app.stage.on('pointermove', moveTurtle);
+
+    function moveTurtle(e) {
+      let pos = e.data.global;
+      turtle.x = pos.x;
+      turtle.y = pos.y;
+    }
+
+    // Update Loop
+    // Add a variable to count up the seconds our demo has been running
+    let elapsed = 0.0;
+    // Tell our application's ticker to run a new callback every frame, passing
+    // in the amount of time that has passed since the last tick
+    app.ticker.add((delta) => {
+      // Add the time to our total elapsed time
+      elapsed += delta;
+      // Update the sprite's X position based on the cosine of our elapsed time.  We divide
+      // by 50 to slow the animation down a bit.
+      csiga.x = 100.0 + Math.cos(elapsed / 300.0) * 100.0;
+      crab.y = 100.0 + Math.cos(elapsed / 50.0) * 100.0;
+    });
+  </script>
+</body>
+
+</html>
